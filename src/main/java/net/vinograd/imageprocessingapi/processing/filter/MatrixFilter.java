@@ -1,53 +1,24 @@
 package net.vinograd.imageprocessingapi.processing.filter;
 
 import net.vinograd.imageprocessingapi.processing.image.Image;
-import net.vinograd.imageprocessingapi.processing.matrix.DoubleMatrix;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
-public class GaussianBlur implements Convertable{
+public abstract class MatrixFilter implements Convertable{
 
-    private final double sigma;
-
-    private final int matrixSize;
-
-    private final DoubleMatrix matrix;
-
-    public GaussianBlur(double sigma, int matrixSize) {
-        this.sigma = sigma;
-        this.matrixSize = matrixSize;
-        this.matrix = new DoubleMatrix(matrixSize, matrixSize);
-        createGaussianKernel();
-    }
-
-    private void createGaussianKernel(){
-        int indent = matrixSize / 2;
-        double sum = 0;
-
-        for (int y = -indent; y <= indent; y++) {
-            for (int x = -indent; x <= indent; x++) {
-                double value = gaussian(x, y);
-                sum += value;
-                matrix.set(x + indent, y + indent, value);
-            }
-        }
-
-        for (int i = 0; i < matrixSize; i++) {
-            for (int j = 0; j < matrixSize; j++) {
-                matrix.set(i, j, matrix.get(i, j) / sum);
-            }
-        }
-
-    }
+    protected List<List<Double>> matrix;
 
     @Override
-    public BufferedImage convert(Image image) {
+    public Image convert(Image image) {
 
         int width = image.getWidth();
         int height = image.getHeight();
 
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        int matrixSize = matrix.size();
 
         int indent = matrixSize / 2;
 
@@ -76,9 +47,11 @@ public class GaussianBlur implements Convertable{
                         int rgb = image.getRGB(pixelX, pixelY);
                         Color color = new Color(rgb);
 
-                        sumR += color.getRed() * matrix.get(ky, kx);
-                        sumG += color.getGreen() * matrix.get(ky, kx);
-                        sumB += color.getBlue() * matrix.get(ky, kx);
+                        double multiplier = matrix.get(ky).get(kx);
+
+                        sumR += color.getRed() * multiplier;
+                        sumG += color.getGreen() * multiplier;
+                        sumB += color.getBlue() * multiplier;
 
                     }
                 }
@@ -93,11 +66,6 @@ public class GaussianBlur implements Convertable{
             }
         }
 
-        return resultImage;
+        return new Image(resultImage);
     }
-
-    private double gaussian(int x, int y) {
-        return (1 / (2 * Math.PI * Math.pow(sigma, 2))) * Math.exp(- ( (x * x + y * y) / (2 * Math.pow(sigma, 2))));
-    }
-
 }
