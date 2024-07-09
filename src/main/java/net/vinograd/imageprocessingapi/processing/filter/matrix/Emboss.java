@@ -19,12 +19,10 @@ public class Emboss extends MatrixFilter {
     }
 
     private void createEmbossMatrix() {
-
         if (type == Type.VERTICAL)
             createVerticalMatrix();
         else if (type == Type.HORIZONTAL)
             createHorizontalMatrix();
-
     }
 
     private void createVerticalMatrix(){
@@ -34,7 +32,6 @@ public class Emboss extends MatrixFilter {
     }
 
     private void createHorizontalMatrix(){
-
         this.matrix.add(Arrays.asList(-1.0, -1.0, -1.0));
         this.matrix.add(Arrays.asList(0.0, 1.0, 0.0));
         this.matrix.add(Arrays.asList(1.0, 1.0, 1.0));

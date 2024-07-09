@@ -1,4 +1,4 @@
-package net.vinograd.imageprocessingapi.processing.filter.edgedetection;
+package net.vinograd.imageprocessingapi.processing.filter.edgedetection.gradient;
 
 import net.vinograd.imageprocessingapi.processing.image.Image;
 import net.vinograd.imageprocessingapi.processing.image.PixelColor;

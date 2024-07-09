@@ -21,6 +21,7 @@ public class PixelColor {
     }
 
     public PixelColor(int rgb){
+        // Math.max(0, Math.min(255, gray)), Math.max(0, Math.min(255, gray)), Math.max(0, Math.min(255, gray)))
         this(new Color(rgb));
     }
 
@@ -37,19 +38,11 @@ public class PixelColor {
     }
 
     private int colorInBoundOrError(int value) {
-        if (value < 0 || value > 255) {
+        if (value < 0 || value > 255)
             throw new IllegalArgumentException();
-        }
+
         return value;
     }
 
-    public PixelColor fromRGB(int rgb) {
-        Color color = new Color(rgb);
-        return new PixelColor(color.getRed(), color.getGreen(), color.getBlue());
-    }
-
-    public int bound(Number number) {
-        return Math.max(0, Math.min(number.intValue(), 255));
-    }
 
 }

@@ -1,0 +1,79 @@
+package net.vinograd.imageprocessingapi.processing.filter.edgedetection.suppression;
+
+import net.vinograd.imageprocessingapi.processing.filter.edgedetection.gradient.GradientCalculator;
+import net.vinograd.imageprocessingapi.processing.image.Image;
+import net.vinograd.imageprocessingapi.processing.image.PixelColor;
+import net.vinograd.imageprocessingapi.processing.image.Point;
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class NonMaximumSuppressor {
+
+    private final Image image;
+    private final GradientCalculator gradientCalculator;
+
+    public NonMaximumSuppressor(Image image, GradientCalculator gradientCalculator) {
+        this.image = image;
+        this.gradientCalculator = gradientCalculator;
+    }
+
+    public BufferedImage suppressNonMaximum() {
+        BufferedImage result = image.emptyCopy();
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int dx = gradientCalculator.gradientX(x, y);
+                int dy = gradientCalculator.gradientY(x, y);
+
+                double gradientAngle = calculateVectorAngle(dx, dy);
+
+                List<Point> neighbourPoints = neighboursPoints(x, y, gradientAngle);
+
+                int intensity = intensity(x, y);
+
+                List<Integer> neighbourIntensities = neighbourPoints.stream()
+                        .map(point -> intensity(point.getX(), point.getY()))
+                        .toList();
+
+                if (neighbourIntensities.isEmpty() || Collections.max(neighbourIntensities) > intensity) {
+                    result.setRGB(x, y, new PixelColor(0,0,0).getRgb());
+                } else {
+                    result.setRGB(x, y, new PixelColor(intensity, intensity, intensity).getRgb());
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private double calculateVectorAngle(int x, int y) {
+        return Math.round(Math.atan2(x, y) / (Math.PI / 4)) * (Math.PI / 4) - Math.PI / 2;
+    }
+
+    private List<Point> neighboursPoints(int x, int y, double gradientAngle) {
+        List<Point> neighboursIntensity = new ArrayList<>();
+
+        int dxInDirection = (int) Math.signum(Math.cos(gradientAngle));
+        int dyInDirection = (int) Math.signum(Math.sin(gradientAngle));
+
+        addNeighboursIntensity(x + dxInDirection, y + dyInDirection, neighboursIntensity);
+        addNeighboursIntensity(x - dxInDirection, y - dyInDirection, neighboursIntensity);
+
+        return neighboursIntensity;
+    }
+
+    private void addNeighboursIntensity(int x, int y, List<Point> neighboursIntensity) {
+        if (x >= 0 && x <= image.getWidth() && y >= 0 && y <= image.getHeight())
+            neighboursIntensity.add(new Point(x, y));
+    }
+
+    private int intensity(int x, int y) {
+        int dx = gradientCalculator.gradientX(x, y);
+        int dy = gradientCalculator.gradientY(x, y);
+        return (int) Math.sqrt(dx * dx + dy * dy);
+    }
+}
+

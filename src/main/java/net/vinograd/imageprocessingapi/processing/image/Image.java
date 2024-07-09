@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.function.BiFunction;
 
 public class Image {
 
@@ -14,12 +15,8 @@ public class Image {
         this.image = image;
     }
 
-    public Image(byte[] bytes) {
-        try {
-            image = ImageIO.read(new ByteArrayInputStream(bytes));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public Image(byte[] bytes) throws IOException {
+        image = ImageIO.read(new ByteArrayInputStream(bytes));
     }
 
     private void validatePixel(int x, int y) {
@@ -50,6 +47,22 @@ public class Image {
         outputStream.close();
 
         return imageBytes;
+    }
+
+    public Image mapToNew(BiFunction<Integer, Integer, PixelColor> mapper) {
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+
+        for (int x = 0; x < newImage.getWidth(); x++) {
+            for (int y = 0; y < newImage.getHeight(); y++) {
+                newImage.setRGB(x, y, mapper.apply(x, y).getRgb());
+            }
+        }
+
+        return new Image(newImage);
+    }
+
+    public BufferedImage emptyCopy(){
+        return new BufferedImage(image.getWidth(), getHeight(), image.getType());
     }
 
 }
