@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 public class Image {
@@ -63,6 +64,14 @@ public class Image {
         }
 
         return new Image(newImage);
+    }
+
+    public void forEach(BiConsumer<Integer, Integer> consumer) {
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                consumer.accept(x, y);
+            }
+        }
     }
 
     public BufferedImage emptyCopy(){
