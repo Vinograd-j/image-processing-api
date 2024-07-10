@@ -40,4 +40,5 @@ public class Emboss extends MatrixFilter {
     public enum Type{
         VERTICAL, HORIZONTAL
     }
+
 }

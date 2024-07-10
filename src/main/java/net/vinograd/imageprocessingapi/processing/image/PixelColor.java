@@ -44,5 +44,4 @@ public class PixelColor {
         return value;
     }
 
-
 }

@@ -5,7 +5,6 @@ import net.vinograd.imageprocessingapi.processing.image.Image;
 import net.vinograd.imageprocessingapi.processing.image.PixelColor;
 import net.vinograd.imageprocessingapi.processing.image.Point;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,33 +19,23 @@ public class NonMaximumSuppressor {
         this.gradientCalculator = gradientCalculator;
     }
 
-    public BufferedImage suppressNonMaximum() {
-        BufferedImage result = image.emptyCopy();
+    public Image suppressNonMaximum() {
+        return image.mapToNew((x, y) ->{
+            int dx = gradientCalculator.gradientX(x, y);
+            int dy = gradientCalculator.gradientY(x, y);
 
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int dx = gradientCalculator.gradientX(x, y);
-                int dy = gradientCalculator.gradientY(x, y);
+            double gradientAngle = calculateVectorAngle(dx, dy);
 
-                double gradientAngle = calculateVectorAngle(dx, dy);
+            List<Point> neighbourPoints = neighboursPoints(x, y, gradientAngle);
 
-                List<Point> neighbourPoints = neighboursPoints(x, y, gradientAngle);
+            int intensity = intensity(x, y);
 
-                int intensity = intensity(x, y);
+            List<Integer> neighbourIntensities = neighbourPoints.stream()
+                    .map(point -> intensity(point.getX(), point.getY()))
+                    .toList();
 
-                List<Integer> neighbourIntensities = neighbourPoints.stream()
-                        .map(point -> intensity(point.getX(), point.getY()))
-                        .toList();
-
-                if (neighbourIntensities.isEmpty() || Collections.max(neighbourIntensities) > intensity) {
-                    result.setRGB(x, y, new PixelColor(0,0,0).getRgb());
-                } else {
-                    result.setRGB(x, y, new PixelColor(intensity, intensity, intensity).getRgb());
-                }
-            }
-        }
-
-        return result;
+            return neighbourIntensities.isEmpty() || Collections.max(neighbourIntensities) > intensity ? new PixelColor(0,0,0) : new PixelColor(intensity, intensity, intensity);
+        });
     }
 
     private double calculateVectorAngle(int x, int y) {
@@ -75,5 +64,5 @@ public class NonMaximumSuppressor {
         int dy = gradientCalculator.gradientY(x, y);
         return (int) Math.sqrt(dx * dx + dy * dy);
     }
-}
 
+}

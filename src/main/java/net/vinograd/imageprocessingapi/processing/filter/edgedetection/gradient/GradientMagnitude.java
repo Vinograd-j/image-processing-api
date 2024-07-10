@@ -16,7 +16,7 @@ public class GradientMagnitude {
     }
 
     public Image apply(){
-      return image.mapToNew((x, y) -> new PixelColor(new Color(gradientCalculator.calculateIntensity(x, y), gradientCalculator.calculateIntensity(x, y), gradientCalculator.calculateIntensity(x, y))));
+        return image.mapToNew((x, y) -> new PixelColor(new Color(gradientCalculator.calculateIntensity(x, y), gradientCalculator.calculateIntensity(x, y), gradientCalculator.calculateIntensity(x, y))));
     }
 
 }

@@ -39,6 +39,10 @@ public class Image {
         return image.getHeight();
     }
 
+    public int getType(){
+        return image.getType();
+    }
+
     public byte[] getBytes(String format) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image, format, outputStream);

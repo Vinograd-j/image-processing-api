@@ -51,7 +51,6 @@ public class SobelGradientCalculator implements GradientCalculator{
                 intensity += new PixelColor(image.getRGB(x + i, y + j)).getGrayscale() * matrix[offset + j][offset + i];
 
         return intensity;
-
     }
 
 }
