@@ -21,7 +21,7 @@ public abstract class PointFilter implements Convertable {
 
         for (int y = 0; y < image.getHeight(); y++)
             for (int x = 0; x < image.getWidth(); x++)
-                result.setRGB(x, y, image.getRGB(x, y));
+                result.setRGB(x, y, mapColor(new Color(image.getRGB(x, y))).getRGB());
 
         return new Image(result);
     }
