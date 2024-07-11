@@ -4,16 +4,17 @@ import lombok.Getter;
 import net.vinograd.imageprocessingapi.processing.image.Image;
 import net.vinograd.imageprocessingapi.processing.image.PixelColor;
 
-public class DoubleThresholdFilter {
+public class DoubleThresholdFilter implements ThresholdFilter{
 
-    private final int upperBoundPercentage;
-    private final int lowerBoundPercentage;
+    private final double upperBoundPercentage;
+    private final double lowerBoundPercentage;
 
-    public DoubleThresholdFilter(int upperBoundPercentage, int lowerBoundPercentage) {
+    public DoubleThresholdFilter(double upperBoundPercentage, double lowerBoundPercentage) {
         this.upperBoundPercentage = upperBoundPercentage;
         this.lowerBoundPercentage = lowerBoundPercentage;
     }
 
+    @Override
     public Image threshold(Image image) {
         return image.mapToNew((x, y) -> {
 

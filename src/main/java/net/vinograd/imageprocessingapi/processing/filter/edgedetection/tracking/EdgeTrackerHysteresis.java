@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EdgeTrackerHysteresis {
+public class EdgeTrackerHysteresis implements EdgeTracker {
 
     private final Image image;
     private final List<Direction> directions;
@@ -27,6 +27,7 @@ public class EdgeTrackerHysteresis {
 
     }
 
+    @Override
     public Image track(){
 
         BufferedImage resultImage = image.emptyCopy();

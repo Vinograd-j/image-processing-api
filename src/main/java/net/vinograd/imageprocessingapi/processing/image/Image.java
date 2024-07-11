@@ -66,10 +66,10 @@ public class Image {
         return new Image(newImage);
     }
 
-    public void forEach(BiConsumer<Integer, Integer> consumer) {
+    public void forEach(BiConsumer<Integer, Integer> action) {
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
-                consumer.accept(x, y);
+                action.accept(x, y);
             }
         }
     }
