@@ -1,13 +1,13 @@
-package net.vinograd.imageprocessingapi.processing.filter.edgedetection;
+package net.vinograd.imageprocessingapi.processing.edgedetection;
 
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.gradient.GradientCalculator;
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.gradient.GradientMagnitude;
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.gradient.SobelGradientCalculator;
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.suppression.NonMaximumSuppressor;
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.threshold.DoubleThresholdFilter;
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.tracking.EdgeTrackerHysteresis;
-import net.vinograd.imageprocessingapi.processing.filter.matrix.GaussianBlur;
 import net.vinograd.imageprocessingapi.processing.filter.point.MonochromeGrayConverter;
+import net.vinograd.imageprocessingapi.processing.edgedetection.gradient.GradientCalculator;
+import net.vinograd.imageprocessingapi.processing.edgedetection.gradient.SobelGradientCalculator;
+import net.vinograd.imageprocessingapi.processing.edgedetection.threshold.DoubleThresholdFilter;
+import net.vinograd.imageprocessingapi.processing.edgedetection.tracking.EdgeTrackerHysteresis;
+import net.vinograd.imageprocessingapi.processing.edgedetection.gradient.GradientMagnitude;
+import net.vinograd.imageprocessingapi.processing.edgedetection.suppression.NonMaximumSuppressor;
+import net.vinograd.imageprocessingapi.processing.filter.matrix.GaussianBlur;
 import net.vinograd.imageprocessingapi.processing.image.Image;
 
 public class CannyOperator {
@@ -20,8 +20,8 @@ public class CannyOperator {
 
         Image resultImage;
 
-        resultImage = new MonochromeGrayConverter().convert(image);
-        resultImage = new GaussianBlur(gaussianBlurSigma, gaussianKernelSize).convert(resultImage);
+        resultImage = new MonochromeGrayConverter(image).convert();
+        resultImage = new GaussianBlur(resultImage, gaussianBlurSigma, gaussianKernelSize).convert();
         GradientCalculator gradientCalculator = new SobelGradientCalculator(resultImage);
         resultImage = new GradientMagnitude(resultImage, gradientCalculator).apply();
         resultImage = new NonMaximumSuppressor(resultImage, gradientCalculator).suppressNonMaximum();

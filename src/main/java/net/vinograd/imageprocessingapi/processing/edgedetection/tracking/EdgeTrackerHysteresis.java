@@ -1,6 +1,6 @@
-package net.vinograd.imageprocessingapi.processing.filter.edgedetection.tracking;
+package net.vinograd.imageprocessingapi.processing.edgedetection.tracking;
 
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.threshold.DoubleThresholdFilter;
+import net.vinograd.imageprocessingapi.processing.edgedetection.threshold.DoubleThresholdFilter;
 import net.vinograd.imageprocessingapi.processing.image.Image;
 
 import java.awt.image.BufferedImage;

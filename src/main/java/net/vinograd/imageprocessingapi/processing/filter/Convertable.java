@@ -4,6 +4,6 @@ import net.vinograd.imageprocessingapi.processing.image.Image;
 
 public interface Convertable {
 
-    Image convert(Image image);
+     Image convert();
 
 }

@@ -1,6 +1,6 @@
-package net.vinograd.imageprocessingapi.processing.filter.edgedetection.suppression;
+package net.vinograd.imageprocessingapi.processing.edgedetection.suppression;
 
-import net.vinograd.imageprocessingapi.processing.filter.edgedetection.gradient.GradientCalculator;
+import net.vinograd.imageprocessingapi.processing.edgedetection.gradient.GradientCalculator;
 import net.vinograd.imageprocessingapi.processing.image.Image;
 import net.vinograd.imageprocessingapi.processing.image.PixelColor;
 import net.vinograd.imageprocessingapi.processing.image.Point;

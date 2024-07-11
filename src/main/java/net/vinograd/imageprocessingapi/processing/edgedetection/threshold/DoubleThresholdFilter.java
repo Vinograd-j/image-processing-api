@@ -1,4 +1,4 @@
-package net.vinograd.imageprocessingapi.processing.filter.edgedetection.threshold;
+package net.vinograd.imageprocessingapi.processing.edgedetection.threshold;
 
 import lombok.Getter;
 import net.vinograd.imageprocessingapi.processing.image.Image;

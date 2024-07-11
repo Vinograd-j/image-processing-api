@@ -2,6 +2,7 @@ package net.vinograd.imageprocessingapi.processing.filter.matrix;
 
 import lombok.Getter;
 import net.vinograd.imageprocessingapi.processing.filter.MatrixFilter;
+import net.vinograd.imageprocessingapi.processing.image.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,8 @@ public class GaussianBlur extends MatrixFilter {
 
     private final int matrixSize;
 
-    public GaussianBlur(double sigma, int matrixSize) {
+    public GaussianBlur(Image image, double sigma, int matrixSize) {
+        super(image);
         this.sigma = sigma;
         this.matrixSize = matrixSize;
 
@@ -48,7 +50,6 @@ public class GaussianBlur extends MatrixFilter {
                 row.set(x, row.get(x) / sum);
             }
         }
-
     }
 
     private double gaussian(int x, int y) {

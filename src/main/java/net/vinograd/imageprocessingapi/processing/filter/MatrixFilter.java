@@ -8,10 +8,15 @@ import java.util.List;
 
 public abstract class MatrixFilter implements Convertable{
 
+    protected Image image;
     protected List<List<Double>> matrix;
 
+    public MatrixFilter(Image image) {
+        this.image = image;
+    }
+
     @Override
-    public Image convert(Image image) {
+    public Image convert() {
 
         int width = image.getWidth();
         int height = image.getHeight();
